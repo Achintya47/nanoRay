@@ -9,15 +9,15 @@
 double hit_sphere(const point3& center, double radius, const ray& r) {
 
     vec3 oc = center - r.origin();
-    double a = dot(r.direction(), r.direction());
-    double b = -2.0 * dot(r.direction(), oc);
-    double c = dot(oc, oc) - radius * radius;
-    double discriminant = b * b - 4 * a * c;
+    double a = r.direction().length_squared();
+    double h = dot(r.direction(), oc);
+    double c = oc.length_squared() - radius * radius;
+    double discriminant = h * h - a * c;
 
     if (discriminant < 0) 
         return -1.0;
     else
-        return (-b - std::sqrt(discriminant)) / (2.0 * a);
+        return (h - std::sqrt(discriminant)) / a;
 }
 
 color ray_color(const ray& r) {
@@ -27,7 +27,7 @@ color ray_color(const ray& r) {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
         return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
-    
+
     vec3 unit_direction = unit_vector(r.direction());
     double a = 0.5*(unit_direction.y() + 1.0);
     // A lerp bend of White and Blue-
