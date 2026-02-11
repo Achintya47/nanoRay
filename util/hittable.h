@@ -8,6 +8,7 @@ class hit_record {
         point3 p;
         vec3 normal;
         double t;
+        // Our normal will always be against the incident ray
         bool front_face;
     
         void set_face_normal(const ray& r, const vec3& outward_normal) {
